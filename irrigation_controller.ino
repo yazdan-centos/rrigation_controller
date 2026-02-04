@@ -172,16 +172,16 @@ IrrigationMode editMode;
 uint8_t editDailyHour, editDailyMin;
 EditCustomState editCustom;
 
-// Menu items
+// Menu items (Persian)
 const char* const MENU_ITEMS[] = {
-    "Enable/Disable",
-    "Mode",
-    "Duration",
-    "Daily Time",
-    "Custom Schedule",
-    "Sync Time",
-    "Instant Start",
-    "Exit"
+    "فعال/غیرفعال",
+    "حالت",
+    "مدت زمان",
+    "زمان روزانه",
+    "برنامه سفارشی",
+    "همگام‌سازی زمان",
+    "شروع فوری",
+    "خروج"
 };
 constexpr int MENU_COUNT = sizeof(MENU_ITEMS) / sizeof(MENU_ITEMS[0]);
 
@@ -401,10 +401,10 @@ void saveSettings() {
 
 const char* getModeString(IrrigationMode mode) {
     switch (mode) {
-        case IrrigationMode::Daily:      return "Daily";
-        case IrrigationMode::EveryOther: return "Every 2 Days";
-        case IrrigationMode::Custom:     return "Custom";
-        default:                          return "Unknown";
+        case IrrigationMode::Daily:      return "روزانه";
+        case IrrigationMode::EveryOther: return "هر ۲ روز";
+        case IrrigationMode::Custom:     return "سفارشی";
+        default:                          return "نامشخص";
     }
 }
 
@@ -413,7 +413,7 @@ void drawMainScreenStatic() {
     tft.fillScreen(Colors::BG_DARK);
     
     // Header
-    UI::drawHeader("IRRIGATION SYSTEM", Colors::ACCENT_CYAN);
+    UI::drawHeader("سیستم آبیاری", Colors::ACCENT_CYAN);
     
     // Date/Time Card frame (top left)
     UI::drawRoundedRect(10, 50, 145, 55, Colors::BG_CARD, Colors::ACCENT_PURPLE);
@@ -422,7 +422,7 @@ void drawMainScreenStatic() {
     tft.setTextSize(1);
     tft.setTextColor(Colors::TEXT_SECONDARY);
     tft.setCursor(45, 55);
-    tft.print("DATE & TIME");
+    tft.print("تاریخ و ساعت");
     
     // Mode Card (middle left) - static content
     UI::drawRoundedRect(10, 115, 145, 50, Colors::BG_CARD, Colors::ACCENT_ORANGE);
@@ -431,7 +431,7 @@ void drawMainScreenStatic() {
     tft.setTextSize(1);
     tft.setTextColor(Colors::TEXT_SECONDARY);
     tft.setCursor(45, 120);
-    tft.print("MODE");
+    tft.print("حالت");
     
     tft.setTextSize(2);
     tft.setTextColor(Colors::ACCENT_ORANGE);
@@ -445,17 +445,17 @@ void drawMainScreenStatic() {
     tft.setTextSize(1);
     tft.setTextColor(Colors::TEXT_SECONDARY);
     tft.setCursor(200, 120);
-    tft.print("DURATION");
+    tft.print("مدت زمان");
     
     char buffer[32];
     tft.setTextSize(2);
     tft.setTextColor(Colors::ACCENT_MAGENTA);
     tft.setCursor(200, 135);
-    snprintf(buffer, sizeof(buffer), "%u min", settings.durationMin);
+    snprintf(buffer, sizeof(buffer), "%u دقیقه", settings.durationMin);
     tft.print(buffer);
     
     // Footer
-    UI::drawFooter("Press ENTER for menu");
+    UI::drawFooter("برای منو ENTER را فشار دهید");
     
     // Reset cache to force initial update
     mainCache.initialized = false;
@@ -514,14 +514,14 @@ void updateMainScreenDynamic() {
         tft.setTextSize(1);
         tft.setTextColor(Colors::TEXT_SECONDARY);
         tft.setCursor(180, 55);
-        tft.print("SYSTEM STATUS");
+        tft.print("وضعیت سیستم");
         
         UI::drawStatusDot(295, 77, settings.enabled);
         
         tft.setTextSize(2);
         tft.setTextColor(settings.enabled ? Colors::STATUS_ON : Colors::STATUS_OFF);
         tft.setCursor(180, 72);
-        tft.print(settings.enabled ? "ENABLED " : "DISABLED");
+        tft.print(settings.enabled ? "فعال   " : "غیرفعال");
         
         mainCache.lastEnabled = settings.enabled;
     }
@@ -547,7 +547,7 @@ void updateMainScreenDynamic() {
         tft.setTextSize(1);
         tft.setTextColor(Colors::TEXT_SECONDARY);
         tft.setCursor(20, 180);
-        tft.print("IRRIGATION");
+        tft.print("آبیاری");
         
         if (irrigation.active) {
             float progress = currentProgress / 100.0f;
@@ -562,12 +562,12 @@ void updateMainScreenDynamic() {
             
             tft.setTextColor(Colors::STATUS_ON);
             tft.setCursor(20, 195);
-            tft.print("ACTIVE ");
+            tft.print("فعال  ");
         } else {
             tft.setTextSize(2);
             tft.setTextColor(Colors::TEXT_MUTED);
             tft.setCursor(100, 185);
-            tft.print("STANDBY");
+            tft.print("آماده‌باش");
         }
         
         mainCache.lastIrrigationActive = irrigation.active;
@@ -585,7 +585,7 @@ void drawMainScreen() {
 
 void drawMenu() {
     tft.fillScreen(Colors::BG_DARK);
-    UI::drawHeader("SETTINGS MENU", Colors::ACCENT_MAGENTA);
+    UI::drawHeader("منوی تنظیمات", Colors::ACCENT_MAGENTA);
     
     const int startY = 48;
     const int itemHeight = 22;
@@ -614,16 +614,16 @@ void drawMenu() {
         if (i == 0) {  // Enable/Disable
             tft.setTextColor(settings.enabled ? Colors::STATUS_ON : Colors::STATUS_OFF);
             tft.setCursor(240, y + 3);
-            tft.print(settings.enabled ? "ON" : "OFF");
+            tft.print(settings.enabled ? "روشن" : "خاموش");
         }
     }
     
-    UI::drawFooter("UP/DOWN: Navigate | ENTER: Select | BACK: Exit");
+    UI::drawFooter("بالا/پایین: ناوبری | ENTER: انتخاب | BACK: خروج");
 }
 
 void drawEditDuration() {
     tft.fillScreen(Colors::BG_DARK);
-    UI::drawHeader("EDIT DURATION", Colors::ACCENT_MAGENTA);
+    UI::drawHeader("ویرایش مدت زمان", Colors::ACCENT_MAGENTA);
     
     // Large value display
     UI::drawRoundedRect(60, 80, 200, 70, Colors::BG_CARD, Colors::ACCENT_MAGENTA);
@@ -640,20 +640,20 @@ void drawEditDuration() {
     tft.setTextSize(2);
     tft.setTextColor(Colors::TEXT_SECONDARY);
     tft.setCursor(160 + textWidth/2 - 10, 110);
-    tft.print("min");
+    tft.print("دقیقه");
     
     // Up/Down arrows
     tft.fillTriangle(160, 60, 145, 75, 175, 75, Colors::ACCENT_CYAN);
     tft.fillTriangle(160, 170, 145, 155, 175, 155, Colors::ACCENT_CYAN);
     
-    UI::drawFooter("UP/DOWN: Adjust | ENTER: Save | BACK: Cancel");
+    UI::drawFooter("بالا/پایین: تنظیم | ENTER: ذخیره | BACK: لغو");
 }
 
 void drawEditMode() {
     tft.fillScreen(Colors::BG_DARK);
-    UI::drawHeader("EDIT MODE", Colors::ACCENT_ORANGE);
+    UI::drawHeader("ویرایش حالت", Colors::ACCENT_ORANGE);
     
-    const char* modes[] = {"Daily", "Every 2 Days", "Custom"};
+    const char* modes[] = {"روزانه", "هر ۲ روز", "سفارشی"};
     const int modeCount = 3;
     
     for (int i = 0; i < modeCount; i++) {
@@ -676,12 +676,12 @@ void drawEditMode() {
         tft.print(modes[i]);
     }
     
-    UI::drawFooter("UP/DOWN: Select | ENTER: Confirm | BACK: Cancel");
+    UI::drawFooter("بالا/پایین: انتخاب | ENTER: تایید | BACK: لغو");
 }
 
 void drawEditDailyTime() {
     tft.fillScreen(Colors::BG_DARK);
-    UI::drawHeader("DAILY SCHEDULE", Colors::ACCENT_YELLOW);
+    UI::drawHeader("برنامه روزانه", Colors::ACCENT_YELLOW);
     
     // Time display box
     UI::drawRoundedRect(50, 80, 220, 80, Colors::BG_CARD, Colors::ACCENT_YELLOW);
@@ -698,31 +698,31 @@ void drawEditDailyTime() {
     tft.setTextSize(1);
     tft.setTextColor(Colors::TEXT_SECONDARY);
     tft.setCursor(100, 145);
-    tft.print("HOUR");
+    tft.print("ساعت");
     tft.setCursor(195, 145);
-    tft.print("MIN");
+    tft.print("دقیقه");
     
     // Arrows for hour (UP)
     tft.fillTriangle(115, 65, 100, 78, 130, 78, Colors::ACCENT_CYAN);
     tft.setTextSize(1);
     tft.setTextColor(Colors::ACCENT_CYAN);
     tft.setCursor(105, 52);
-    tft.print("UP");
+    tft.print("بالا");
     
     // Arrows for minute (DOWN)
     tft.fillTriangle(210, 175, 195, 162, 225, 162, Colors::ACCENT_MAGENTA);
     tft.setTextColor(Colors::ACCENT_MAGENTA);
     tft.setCursor(195, 180);
-    tft.print("DOWN");
+    tft.print("پایین");
     
-    UI::drawFooter("UP: Hour+ | DOWN: Min+ | ENTER: Save");
+    UI::drawFooter("بالا: ساعت+ | پایین: دقیقه+ | ENTER: ذخیره");
 }
 
 void drawEditCustom() {
     tft.fillScreen(Colors::BG_DARK);
-    UI::drawHeader("CUSTOM SCHEDULE", Colors::ACCENT_PURPLE);
+    UI::drawHeader("برنامه سفارشی", Colors::ACCENT_PURPLE);
     
-    const char* fieldLabels[] = {"Year", "Month", "Day", "Hour", "Minute"};
+    const char* fieldLabels[] = {"سال", "ماه", "روز", "ساعت", "دقیقه"};
     const int fieldValues[] = {editCustom.year, editCustom.month, editCustom.day, 
                                editCustom.hour, editCustom.minute};
     const uint16_t fieldColors[] = {Colors::ACCENT_CYAN, Colors::ACCENT_MAGENTA, 
@@ -789,17 +789,17 @@ void drawEditCustom() {
     tft.setTextColor(Colors::TEXT_SECONDARY);
     tft.setCursor(120, 185);
     char progBuf[16];
-    snprintf(progBuf, sizeof(progBuf), "Field %d of 5", editCustom.field + 1);
+    snprintf(progBuf, sizeof(progBuf), "فیلد %d از ۵", editCustom.field + 1);
     tft.print(progBuf);
     
     UI::drawProgressBar(100, 195, 120, 8, (editCustom.field + 1) / 5.0f, Colors::ACCENT_PURPLE);
     
-    UI::drawFooter("UP/DOWN: Adjust | ENTER: Next | BACK: Cancel");
+    UI::drawFooter("بالا/پایین: تنظیم | ENTER: بعدی | BACK: لغو");
 }
 
 void drawSyncScreen() {
     tft.fillScreen(Colors::BG_DARK);
-    UI::drawHeader("TIME SYNC", Colors::ACCENT_CYAN);
+    UI::drawHeader("همگام‌سازی زمان", Colors::ACCENT_CYAN);
     
     UI::drawRoundedRect(60, 80, 200, 80, Colors::BG_CARD, Colors::ACCENT_CYAN);
     
@@ -808,12 +808,12 @@ void drawSyncScreen() {
     tft.setTextSize(2);
     tft.setTextColor(Colors::TEXT_PRIMARY);
     tft.setCursor(75, 130);
-    tft.print("Connecting...");
+    tft.print("در حال اتصال...");
 }
 
 void drawInstantConfirm() {
     tft.fillScreen(Colors::BG_DARK);
-    UI::drawHeader("INSTANT START", Colors::ACCENT_GREEN);
+    UI::drawHeader("شروع فوری", Colors::ACCENT_GREEN);
     
     // Warning/confirmation box
     UI::drawRoundedRect(30, 70, 260, 100, Colors::BG_CARD, Colors::ACCENT_GREEN);
@@ -823,14 +823,14 @@ void drawInstantConfirm() {
     tft.setTextSize(2);
     tft.setTextColor(Colors::TEXT_PRIMARY);
     tft.setCursor(55, 115);
-    tft.print("Start irrigation?");
+    tft.print("شروع آبیاری؟");
     
     // Buttons
     UI::drawRoundedRect(50, 180, 100, 35, Colors::STATUS_ON, Colors::TEXT_PRIMARY);
     tft.setTextSize(2);
     tft.setTextColor(Colors::TEXT_PRIMARY);
     tft.setCursor(70, 188);
-    tft.print("YES");
+    tft.print("بله");
     
     tft.setTextSize(1);
     tft.setCursor(65, 178);
@@ -841,7 +841,7 @@ void drawInstantConfirm() {
     tft.setTextSize(2);
     tft.setTextColor(Colors::TEXT_PRIMARY);
     tft.setCursor(200, 188);
-    tft.print("NO");
+    tft.print("خیر");
     
     tft.setTextSize(1);
     tft.setCursor(195, 178);
@@ -1206,7 +1206,7 @@ void syncTimeWithNTP() {
         tft.setTextSize(2);
         tft.setTextColor(Colors::TEXT_PRIMARY);
         tft.setCursor(75, 130);
-        tft.print("Connecting");
+        tft.print("در حال اتصال");
         for (int i = 0; i <= dots; i++) {
             tft.print(".");
         }
@@ -1217,7 +1217,7 @@ void syncTimeWithNTP() {
         tft.fillRect(75, 130, 180, 20, Colors::BG_CARD);
         tft.setTextColor(Colors::STATUS_ON);
         tft.setCursor(95, 130);
-        tft.print("Syncing...");
+        tft.print("همگام‌سازی...");
         
         configTime(0, 0, "pool.ntp.org", "time.nist.gov");
         
@@ -1235,18 +1235,18 @@ void syncTimeWithNTP() {
             tft.fillRect(75, 130, 180, 20, Colors::BG_CARD);
             tft.setTextColor(Colors::STATUS_ON);
             tft.setCursor(85, 130);
-            tft.print("Success!");
+            tft.print("موفق!");
         } else {
             tft.fillRect(75, 130, 180, 20, Colors::BG_CARD);
             tft.setTextColor(Colors::STATUS_OFF);
             tft.setCursor(75, 130);
-            tft.print("Sync Failed");
+            tft.print("خطای همگام‌سازی");
         }
     } else {
         tft.fillRect(75, 130, 180, 20, Colors::BG_CARD);
         tft.setTextColor(Colors::STATUS_OFF);
         tft.setCursor(65, 130);
-        tft.print("No WiFi");
+        tft.print("بدون WiFi");
     }
     
     delay(1500);
@@ -1278,18 +1278,18 @@ void setup() {
     tft.fillScreen(Colors::BG_DARK);
     
     // Boot splash
-    UI::drawHeader("IRRIGATION SYSTEM", Colors::ACCENT_CYAN);
+    UI::drawHeader("سیستم آبیاری", Colors::ACCENT_CYAN);
     tft.setTextSize(1);
     tft.setTextColor(Colors::TEXT_SECONDARY);
     tft.setCursor(110, 120);
-    tft.print("Initializing...");
+    tft.print("در حال راه‌اندازی...");
     
     // Initialize RTC
     Wire.begin();
     if (!rtc.begin()) {
         tft.setTextColor(Colors::STATUS_OFF);
         tft.setCursor(100, 140);
-        tft.print("RTC Error!");
+        tft.print("خطای RTC!");
         delay(2000);
     }
     
