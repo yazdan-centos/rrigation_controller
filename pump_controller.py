@@ -59,7 +59,7 @@ class PumpController:
         self.last_runtime_reset = datetime.now().date()
         self.last_stop_time: Optional[datetime] = None
         
-    def can_start(self) -> tuple[bool, str]:
+    def can_start(self) -> Tuple[bool, str]:
         """
         Check if pump can be started safely
         
@@ -170,7 +170,7 @@ class PumpController:
         runtime = (datetime.now() - self.current_event.start_time).total_seconds()
         return int(runtime)
         
-    def check_safety(self) -> tuple[bool, str]:
+    def check_safety(self) -> Tuple[bool, str]:
         """
         Check safety conditions during operation
         
