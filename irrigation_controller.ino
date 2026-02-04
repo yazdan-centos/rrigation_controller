@@ -402,7 +402,7 @@ void saveSettings() {
 const char* getModeString(IrrigationMode mode) {
     switch (mode) {
         case IrrigationMode::Daily:      return "روزانه";
-        case IrrigationMode::EveryOther: return "هر ۲ روز";
+        case IrrigationMode::EveryOther: return "هر 2 روز";
         case IrrigationMode::Custom:     return "سفارشی";
         default:                          return "نامشخص";
     }
@@ -521,7 +521,7 @@ void updateMainScreenDynamic() {
         tft.setTextSize(2);
         tft.setTextColor(settings.enabled ? Colors::STATUS_ON : Colors::STATUS_OFF);
         tft.setCursor(180, 72);
-        tft.print(settings.enabled ? "فعال   " : "غیرفعال");
+        tft.print(settings.enabled ? "فعال" : "غیرفعال");
         
         mainCache.lastEnabled = settings.enabled;
     }
@@ -562,7 +562,7 @@ void updateMainScreenDynamic() {
             
             tft.setTextColor(Colors::STATUS_ON);
             tft.setCursor(20, 195);
-            tft.print("فعال  ");
+            tft.print("فعال");
         } else {
             tft.setTextSize(2);
             tft.setTextColor(Colors::TEXT_MUTED);
@@ -653,7 +653,7 @@ void drawEditMode() {
     tft.fillScreen(Colors::BG_DARK);
     UI::drawHeader("ویرایش حالت", Colors::ACCENT_ORANGE);
     
-    const char* modes[] = {"روزانه", "هر ۲ روز", "سفارشی"};
+    const char* modes[] = {"روزانه", "هر 2 روز", "سفارشی"};
     const int modeCount = 3;
     
     for (int i = 0; i < modeCount; i++) {
@@ -789,7 +789,7 @@ void drawEditCustom() {
     tft.setTextColor(Colors::TEXT_SECONDARY);
     tft.setCursor(120, 185);
     char progBuf[16];
-    snprintf(progBuf, sizeof(progBuf), "فیلد %d از ۵", editCustom.field + 1);
+    snprintf(progBuf, sizeof(progBuf), "فیلد %d از 5", editCustom.field + 1);
     tft.print(progBuf);
     
     UI::drawProgressBar(100, 195, 120, 8, (editCustom.field + 1) / 5.0f, Colors::ACCENT_PURPLE);
