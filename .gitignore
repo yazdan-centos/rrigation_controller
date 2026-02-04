@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+ENV/
+env/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+irrigation_data.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Configuration (keep templates, ignore actual configs with credentials)
+config_local.py
+secrets.h
+
+# Arduino/PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+.cache/
+temp/
+tmp/
+
+# OS
+Thumbs.db
+.directory
