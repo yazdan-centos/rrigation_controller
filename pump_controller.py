@@ -4,7 +4,7 @@ Pump Controller - Manages water pump operations and safety
 
 import time
 from datetime import datetime, timedelta
-from typing import Optional, Dict, List
+from typing import Optional, Dict, List, Tuple
 from dataclasses import dataclass
 import logging
 
