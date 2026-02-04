@@ -1,0 +1,5 @@
+# Required Python packages
+paho-mqtt>=1.6.1
+adafruit-circuitpython-dht>=3.7.0
+RPi.GPIO>=0.7.1
+board>=1.0
